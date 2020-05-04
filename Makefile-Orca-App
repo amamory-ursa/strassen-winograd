@@ -7,10 +7,11 @@ APP_LIB   := app-$(APP_NAME).a
 
 INC_DIRS += -I$(APP_INC) -I/opt/gcc-riscv64/riscv-gcc-8.3.0-sifive/riscv64-unknown-elf/include/c++/8.3.0/
 
-CFLAGS += 
-CXXFLAGS += -std=c++0x
+CFLAGS += -DUSE_ORCA
+CXXFLAGS += -std=c++0x -DUSE_ORCA
 ASMFLAGS +=
-LDFLAGS += --defsym=RAM_SIZE=4M --defsym=HEAP_SIZE=0x80000
+# includes 1Mbyte of heap
+LDFLAGS += --defsym=RAM_SIZE=4M --defsym=HEAP_SIZE=0x100000
 
 # Update these lines with your source code
 APP_SRCS := $(wildcard $(APP_SRC)/*.c)
