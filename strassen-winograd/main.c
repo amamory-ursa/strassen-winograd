@@ -11,8 +11,11 @@
 #include "matrix.h"
 #include "naive.h"
 #include "winograd.h"
+//#include <sys/time.h>
+//#include <sys/resource.h>
 #include "strassen.h"
 
+/*
 double calculate(const struct rusage* b, const struct rusage* a)
 {
     if (b == NULL || a == NULL)
@@ -28,15 +31,16 @@ double calculate(const struct rusage* b, const struct rusage* a)
                 / 1000000.0);
     }
 }
-
+*/
 void experiment()
 {
-    struct rusage before, after;
+    //struct rusage before, after;
     
-    unsigned int N=64;
-    while (N<=2048)
+    unsigned int N=16;
+    while (N<=128)
     {
-        unsigned int M = (2048 / N);
+        //unsigned int M = (2048 / N);
+        unsigned int M = 1;
         double naive_mult_time = .0;
         double winograd_mult_time = .0;
         double strassen_mult_time = .0;
@@ -47,38 +51,43 @@ void experiment()
         matrix* winograd_res = alloc_matrix();
         matrix* strassen_res = alloc_matrix();
         
+        printf("starting to alloc...\n");
         random_matrix(N, N, m1);
         random_matrix(N, N, m2);
+        printf("allocated!\n");
         for(int i = 0; i<M; i++)
         {
-            getrusage(RUSAGE_SELF, &before);
+            //getrusage(RUSAGE_SELF, &before);
             naive_mult(m1, m2, naive_res);
-            getrusage(RUSAGE_SELF, &after);
-            naive_mult_time += calculate(&before, &after);
+            //getrusage(RUSAGE_SELF, &after);
+            //naive_mult_time += calculate(&before, &after);
         }
         naive_mult_time /= M;
+        printf("naive done!\n");
         
         
         for(int i = 0; i<M; i++)
         {
-            getrusage(RUSAGE_SELF, &before);
+            //getrusage(RUSAGE_SELF, &before);
             winograd_mult(m1, m2, winograd_res);
-            getrusage(RUSAGE_SELF, &after);
-            winograd_mult_time += calculate(&before, &after);
+            //getrusage(RUSAGE_SELF, &after);
+            //winograd_mult_time += calculate(&before, &after);
         }
         winograd_mult_time /= M;
+        printf("winograd done!\n");
         
         
         for(int i = 0; i<M; i++)
         {
-            getrusage(RUSAGE_SELF, &before);
+            //getrusage(RUSAGE_SELF, &before);
             strassen_mult(m1, m2, strassen_res, 100, 32);
-            getrusage(RUSAGE_SELF, &after);
-            strassen_mult_time += calculate(&before, &after);
+            //getrusage(RUSAGE_SELF, &after);
+            //strassen_mult_time += calculate(&before, &after);
         }
         strassen_mult_time /= M;
+        printf("strassen done!\n");
         
-        printf("{\"N\" : %d, \"naive\" : %f, \"winograd\" : %f, \"strassen\" : %f}\n", N, naive_mult_time, winograd_mult_time, strassen_mult_time);
+        //printf("{\"N\" : %d, \"naive\" : %f, \"winograd\" : %f, \"strassen\" : %f}\n", N, naive_mult_time, winograd_mult_time, strassen_mult_time);
         
         free_matrix(m1);
         free_matrix(m2);

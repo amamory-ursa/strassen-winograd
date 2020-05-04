@@ -1,0 +1,22 @@
+# Do not modify the lines below
+#APP_NAME  := cpp-example
+APP_DIR   := .
+APP_SRC   := .
+APP_INC   := $(APP_DIR)/data
+APP_LIB   := app-$(APP_NAME).a 
+
+INC_DIRS += -I$(APP_INC) -I/opt/gcc-riscv64/riscv-gcc-8.3.0-sifive/riscv64-unknown-elf/include/c++/8.3.0/
+
+CFLAGS += 
+CXXFLAGS += -std=c++0x
+ASMFLAGS +=
+LDFLAGS += --defsym=RAM_SIZE=4M --defsym=HEAP_SIZE=0x80000
+
+# Update these lines with your source code
+APP_SRCS := $(wildcard $(APP_SRC)/*.c)
+APP_OBJS +=  $(APP_SRCS:.c=.o)
+
+#$(info $$APP_OBJS is [${APP_OBJS}])
+
+$(APP_LIB) : $(APP_OBJS)
+	$(Q)$(AR) rcs $@ $^

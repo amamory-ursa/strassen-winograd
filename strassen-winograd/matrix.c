@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+//#include <time.h>
 #include "matrix.h"
 
 void zero_matrix(unsigned int rows, unsigned int cols, matrix* m)
@@ -30,7 +30,8 @@ void zero_matrix(unsigned int rows, unsigned int cols, matrix* m)
 
 void random_matrix(unsigned int rows, unsigned int cols, matrix* m)
 {
-    srand((unsigned int) time(NULL));
+    //srand((unsigned int) time(NULL));
+    srand(123456);
     m->matrix = (double*) malloc(rows * cols * sizeof(double));
     m->rowNum = rows;
     m->colNum = cols;
