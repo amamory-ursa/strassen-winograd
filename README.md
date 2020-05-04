@@ -63,7 +63,7 @@ $ORCA_SIM_DIR/bin/single-core.exe image.bin
 The define --defsym=HEAP_SIZE=0x100000 (1MBytes) in Makefile-Orca-App was increased to allow more allocated memory.
 
 
-After a while (about 3 minutes), check the results
+After a while (about 1 minute), check the results
 
 ```
 cat logs/core\!.cpu_debug.log
