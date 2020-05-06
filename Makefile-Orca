@@ -1,6 +1,9 @@
+# concat the required libs to build the image 
+include Makefile-Orca-App
+
+# set these variable accordingly
 ORCA_SIM_DIR = /home/lsa/repos/anderson/orca-sim
 ORCA_SW_DIR = /home/lsa/repos/anderson/orca-software-tools/
-
 
 # Be silent per default, but 'make V=1' will show all compiler calls.
 ifneq ($(V),1)
@@ -9,12 +12,8 @@ export Q := @
 MAKEFLAGS += --no-print-directory
 endif
 
-APP_NAME = winograd
 IMAGE_NAME = image
 APP_STATIC_LIBS = app-$(APP_NAME).a
-
-#ORCA_APPLICATIONS := cpp-example
-#ORCA_APPLICATIONS := producer-consumer-pubsub producer-consumer app-spawner app-bloater deadline-monitor
 
 # Software extensions (experimental)
 #ORCA_EXTENSIONS := orca-core orca-pubsub orca-monitoring 
@@ -50,11 +49,8 @@ $(foreach module,$(ORCA_EXTENSIONS),$(eval include $(ORCA_SW_DIR)/extensions/$(m
 # get the platform depedent parameters. 
 include $(ORCA_SIM_DIR)/platforms/$(ORCA_PLATFORM)/Configuration.mk
 
-# concat the required libs to build the image 
-include Makefile-Orca-App
 $(foreach module,$(ORCA_EXTENSIONS),   $(eval EXT_STATIC_LIBS := $(EXT_STATIC_LIBS) ext-$(module).a))
 STATIC_LIBS := $(OS_STATIC_LIB) $(APP_STATIC_LIBS) $(EXT_STATIC_LIBS)
-
 
 # general rule to compile all .c software
 .c.o:
